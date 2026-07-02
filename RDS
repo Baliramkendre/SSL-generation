@@ -1,0 +1,34 @@
+
+```
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+
+# switch the user
+sudo -i -u postgres
+
+
+# 
+psql
+
+
+# set passwd for postgres user
+ALTER USER postgres WITH ENCRYPTED PASSWORD '2001';
+
+\q
+
+exit
+
+#Configure Remote Access
+
+sudo nano /etc/postgresql/16/main/postgresql.conf
+listen_addresses = "*"
+
+
+# Edit `pg_hba.con`
+TYPE  DATABASE        USER        ADDRESS                 METHOD
+host    all             all         0.0.0.0/0               scram-sha-256
+
+sudo service postgresql restart
+
+
+```
