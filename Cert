@@ -1,0 +1,41 @@
+- First create a A record and assign a public IPv4
+- Go to that server
+```
+
+sudo apt update && sudo apt install certbot -y && sudo apt install certbot python3-certbot-nginx -y
+
+# remove the default
+sudo rm /etc/nginx/sites-available/default
+# Replace 
+sudo rm /etc/nginx/sites-available/default
+
+# 2. Add this inside your server block: 
+server {
+	listen 80; 
+	server_name app.gpgpt.com;
+	
+	# Let's Encrypt challenge 
+	location ^~ /.well-known/acme-challenge/ { 
+		root /var/www/html; 
+		default_type text/plain;
+	}
+}
+
+# Create and set permissions
+sudo mkdir -p /var/www/html/.well-known/acme-challenge
+sudo chown -R www-data:www-data /var/www/html
+sudo chmod -R 755 /var/www/html
+
+# Test with a file
+echo "test" | sudo tee /var/www/html/.well-known/acme-challenge/test.txt
+
+# Reload nginx
+sudo nginx -t
+
+# Reload nginx 
+sudo systemctl reload nginx
+
+# Try certbot again s
+sudo certbot --nginx -d staging.gpgpt.com
+
+```
